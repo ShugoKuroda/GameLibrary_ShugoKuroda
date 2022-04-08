@@ -13,18 +13,16 @@ int nPoint;
 //======================================================
 void InitGameFlag(void)
 {
-	LPDIRECT3DDEVICE9 pDevice;		//デバイスのポインタ
-
 	//デバイスの取得
-	pDevice = GetDevice();
+	LPDIRECT3DDEVICE9 pDevice = GetDevice();		//デバイスのポインタ
 
-	////テクスチャの読み込み
-	//D3DXCreateTextureFromFile(pDevice,
-	//	"data/TEXTURE/flag000.png",
-	//	&g_pTextureGameFlag[0]);
-	//D3DXCreateTextureFromFile(pDevice,
-	//	"data/TEXTURE/Exit000.png",
-	//	&g_pTextureGameFlag[1]);
+	//テクスチャの読み込み
+	D3DXCreateTextureFromFile(pDevice,
+		"date/TEXTURE/flag000.png",
+		&g_pTextureGameFlag[0]);
+	D3DXCreateTextureFromFile(pDevice,
+		"date/TEXTURE/Exit000.png",
+		&g_pTextureGameFlag[1]);
 
 	//頂点バッファの生成
 	pDevice->CreateVertexBuffer(sizeof(VERTEX_2D) * 4 * 4,

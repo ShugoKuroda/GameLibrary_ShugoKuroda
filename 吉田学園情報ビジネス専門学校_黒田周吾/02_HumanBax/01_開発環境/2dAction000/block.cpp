@@ -18,8 +18,9 @@ int g_nFlag;		//中間地点の通過番号
 //================================================
 void InitBlock(void)
 {
-	//デバイスの取得
-	LPDIRECT3DDEVICE9 pDevice = GetDevice();
+	LPDIRECT3DDEVICE9 pDevice;		//デバイスへのポインタ
+
+	pDevice = GetDevice();			//デバイスの取得
 
 	//テクスチャの読み込み
 	D3DXCreateTextureFromFile(pDevice, "data/TEXTURE/block000.png", &g_pTextureBlock[0]);	//通常ブロック
@@ -300,10 +301,8 @@ bool CollisionBlock(D3DXVECTOR3 *pPos, D3DXVECTOR3 *pPosOld, D3DXVECTOR3 *pMove,
 {
 	bool bIsLanding = false;		//着地しているかどうか
 
-	Player *pPlayer;	//プレイヤーのポインタ
-
 	//プレイヤー情報を取得
-	pPlayer = GetPlayer();
+	Player *pPlayer = GetPlayer();
 
 	for (int nCnt = 0; nCnt < MAX_BLOCK; nCnt++)
 	{
@@ -380,14 +379,29 @@ bool CollisionBlock(D3DXVECTOR3 *pPos, D3DXVECTOR3 *pPosOld, D3DXVECTOR3 *pMove,
 			}
 			if (nType == 0 || nType == 2)
 			{
-				//下からブロックにぶつかった場合
-				if (pPos->x + (Width / 2) > g_aBlock[nCnt].pos.x - (g_aBlock[nCnt].fWidth / 2)
-					&& pPos->x - (Width / 2) < g_aBlock[nCnt].pos.x + (g_aBlock[nCnt].fWidth / 2)
-					&& pPos->y - Height < g_aBlock[nCnt].pos.y + (g_aBlock[nCnt].fHeight / 2)
-					&& pPosOld->y - Height >= g_aBlock[nCnt].pos.y + (g_aBlock[nCnt].fHeight / 2))
+				if (g_aBlock[nCnt].nType == 1 || g_aBlock[nCnt].nType == 2 || g_aBlock[nCnt].nType == 4)
+				{//可動ブロックの場合
+					//下からブロックにぶつかった場合
+					if (pPos->x + (Width / 2) > g_aBlock[nCnt].pos.x - (g_aBlock[nCnt].fWidth / 2)
+						&& pPos->x - (Width / 2) < g_aBlock[nCnt].pos.x + (g_aBlock[nCnt].fWidth / 2)
+						&& pPos->y - Height < g_aBlock[nCnt].pos.y
+						&& pPosOld->y - Height >= g_aBlock[nCnt].pos.y)
+					{
+						pPos->y = g_aBlock[nCnt].pos.y + Height;
+						pMove->y = 0.0f;
+					}
+				}
+				else
 				{
-					pPos->y = g_aBlock[nCnt].pos.y + (g_aBlock[nCnt].fHeight / 2) + Height;
-					pMove->y = 0.0f;
+					//下からブロックにぶつかった場合
+					if (pPos->x + (Width / 2) > g_aBlock[nCnt].pos.x - (g_aBlock[nCnt].fWidth / 2)
+						&& pPos->x - (Width / 2) < g_aBlock[nCnt].pos.x + (g_aBlock[nCnt].fWidth / 2)
+						&& pPos->y - Height < g_aBlock[nCnt].pos.y + (g_aBlock[nCnt].fHeight / 2)
+						&& pPosOld->y - Height >= g_aBlock[nCnt].pos.y + (g_aBlock[nCnt].fHeight / 2))
+					{
+						pPos->y = g_aBlock[nCnt].pos.y + (g_aBlock[nCnt].fHeight / 2) + Height;
+						pMove->y = 0.0f;
+					}
 				}
 			}
 
@@ -405,21 +419,33 @@ bool CollisionBlock(D3DXVECTOR3 *pPos, D3DXVECTOR3 *pPosOld, D3DXVECTOR3 *pMove,
 
 			if (nType == 0 || nType == 2)
 			{//可動ブロック、プレイヤーの場合
-				//右からブロックにぶつかった時場合
-				if (pPosOld->x - (Width / 2) >= g_aBlock[nCnt].pos.x + (g_aBlock[nCnt].fWidth / 2)
-					&& pPos->x - (Width / 2) < g_aBlock[nCnt].pos.x + (g_aBlock[nCnt].fWidth / 2)
-					&& pPos->y > g_aBlock[nCnt].pos.y - (g_aBlock[nCnt].fHeight / 2)
-					&& pPos->y - Height < g_aBlock[nCnt].pos.y + (g_aBlock[nCnt].fHeight / 2))  
+				if (g_aBlock[nCnt].nType == 1 || g_aBlock[nCnt].nType == 2 || g_aBlock[nCnt].nType == 4)
 				{
-					if (g_aBlock[nCnt].nType == 1 || g_aBlock[nCnt].nType == 2 || g_aBlock[nCnt].nType == 4)
+					//右からブロックにぶつかった時場合
+					if (pPosOld->x - (Width / 2) >= g_aBlock[nCnt].pos.x + (g_aBlock[nCnt].fWidth / 2)
+						&& pPos->x - (Width / 2) < g_aBlock[nCnt].pos.x + (g_aBlock[nCnt].fWidth / 2)
+						&& pPos->y > g_aBlock[nCnt].pos.y - g_aBlock[nCnt].fHeight
+						&& pPos->y - Height < g_aBlock[nCnt].pos.y)
 					{
 						g_aBlock[nCnt].posOld.x = g_aBlock[nCnt].pos.x;
 						g_aBlock[nCnt].pos.x = pPos->x - (Width / 2) - (g_aBlock[nCnt].fWidth / 2) - 3;
 						CollisionBlock(&g_aBlock[nCnt].pos, &g_aBlock[nCnt].posOld, &g_aBlock[nCnt].move, &g_aBlock[nCnt].Airmove, g_aBlock[nCnt].fWidth, g_aBlock[nCnt].fHeight, 0);
 						GameScroll(2);
+						pPos->x = g_aBlock[nCnt].pos.x + (g_aBlock[nCnt].fWidth / 2) + (Width / 2);
+						pMove->x = 0.0f;
 					}
-					pPos->x = g_aBlock[nCnt].pos.x + (g_aBlock[nCnt].fWidth / 2) + (Width / 2);
-					pMove->x = 0.0f;
+				}
+				else
+				{
+					//右からブロックにぶつかった時場合
+					if (pPosOld->x - (Width / 2) >= g_aBlock[nCnt].pos.x + (g_aBlock[nCnt].fWidth / 2)
+						&& pPos->x - (Width / 2) < g_aBlock[nCnt].pos.x + (g_aBlock[nCnt].fWidth / 2)
+						&& pPos->y > g_aBlock[nCnt].pos.y - (g_aBlock[nCnt].fHeight / 2)
+						&& pPos->y - Height < g_aBlock[nCnt].pos.y + (g_aBlock[nCnt].fHeight / 2))
+					{
+						pPos->x = g_aBlock[nCnt].pos.x + (g_aBlock[nCnt].fWidth / 2) + (Width / 2);
+						pMove->x = 0.0f;
+					}
 				}
 			}
 
@@ -437,31 +463,43 @@ bool CollisionBlock(D3DXVECTOR3 *pPos, D3DXVECTOR3 *pPosOld, D3DXVECTOR3 *pMove,
 
 			if (nType == 0 || nType == 2)
 			{
-				//左からブロックにぶつかった時場合
-				if (pPosOld->x + (Width / 2) <= g_aBlock[nCnt].pos.x - (g_aBlock[nCnt].fWidth / 2)
-					&& pPos->x + (Width / 2) > g_aBlock[nCnt].pos.x - (g_aBlock[nCnt].fWidth / 2)
-					&& pPos->y > g_aBlock[nCnt].pos.y - (g_aBlock[nCnt].fHeight / 2)
-					&& pPos->y - Height < g_aBlock[nCnt].pos.y + (g_aBlock[nCnt].fHeight / 2))
+				if (g_aBlock[nCnt].nType == 1 || g_aBlock[nCnt].nType == 2 || g_aBlock[nCnt].nType == 4)
 				{
-					if (nType == 0)
-					{
-						if (g_aBlock[nCnt].nType == 6)
-						{//出口に触れたら
-							//モード移行
-							SetFade(MODE_RESULT);
-
-							g_aBlock[nCnt].bUse = false;
-						}
-					}
-					if (g_aBlock[nCnt].nType == 1 || g_aBlock[nCnt].nType == 2 || g_aBlock[nCnt].nType == 4)
+					//左からブロックにぶつかった時場合
+					if (pPosOld->x + (Width / 2) <= g_aBlock[nCnt].pos.x - (g_aBlock[nCnt].fWidth / 2)
+						&& pPos->x + (Width / 2) > g_aBlock[nCnt].pos.x - (g_aBlock[nCnt].fWidth / 2)
+						&& pPos->y > g_aBlock[nCnt].pos.y - g_aBlock[nCnt].fHeight
+						&& pPos->y - Height < g_aBlock[nCnt].pos.y)
 					{
 						g_aBlock[nCnt].posOld.x = g_aBlock[nCnt].pos.x;
 						g_aBlock[nCnt].pos.x = pPos->x + (Width / 2) + (g_aBlock[nCnt].fWidth / 2) + 3;
 						CollisionBlock(&g_aBlock[nCnt].pos, &g_aBlock[nCnt].posOld, &g_aBlock[nCnt].move, &g_aBlock[nCnt].Airmove, g_aBlock[nCnt].fWidth, g_aBlock[nCnt].fHeight, 0);
 						GameScroll(2);
+						pPos->x = g_aBlock[nCnt].pos.x - (g_aBlock[nCnt].fWidth / 2) - (Width / 2);
+						pMove->x = 0.0f;
 					}
-					pPos->x = g_aBlock[nCnt].pos.x - (g_aBlock[nCnt].fWidth / 2) - (Width / 2);
-					pMove->x = 0.0f;
+				}
+				else
+				{
+					//左からブロックにぶつかった時場合
+					if (pPosOld->x + (Width / 2) <= g_aBlock[nCnt].pos.x - (g_aBlock[nCnt].fWidth / 2)
+						&& pPos->x + (Width / 2) > g_aBlock[nCnt].pos.x - (g_aBlock[nCnt].fWidth / 2)
+						&& pPos->y > g_aBlock[nCnt].pos.y - (g_aBlock[nCnt].fHeight / 2)
+						&& pPos->y - Height < g_aBlock[nCnt].pos.y + (g_aBlock[nCnt].fHeight / 2))
+					{
+						if (nType == 0)
+						{
+							if (g_aBlock[nCnt].nType == 6)
+							{//出口に触れたら
+								//モード移行
+								SetFade(MODE_RESULT);
+
+								g_aBlock[nCnt].bUse = false;
+							}
+						}
+						pPos->x = g_aBlock[nCnt].pos.x - (g_aBlock[nCnt].fWidth / 2) - (Width / 2);
+						pMove->x = 0.0f;
+					}
 				}
 			}
 
