@@ -1,0 +1,39 @@
+﻿  tutorial.cpp
+c:\users\student\desktop\hackathon_kuropi\プログラムファイル\2dhackathon000\main.h(8): fatal error C1083: include ファイルを開けません。'd3dx9.h':No such file or directory
+  title.cpp
+c:\users\student\desktop\hackathon_kuropi\プログラムファイル\2dhackathon000\main.h(8): fatal error C1083: include ファイルを開けません。'd3dx9.h':No such file or directory
+  time.cpp
+c:\users\student\desktop\hackathon_kuropi\プログラムファイル\2dhackathon000\main.h(8): fatal error C1083: include ファイルを開けません。'd3dx9.h':No such file or directory
+  sound.cpp
+c:\users\student\desktop\hackathon_kuropi\プログラムファイル\2dhackathon000\main.h(8): fatal error C1083: include ファイルを開けません。'd3dx9.h':No such file or directory
+  shadow.cpp
+c:\users\student\desktop\hackathon_kuropi\プログラムファイル\2dhackathon000\main.h(8): fatal error C1083: include ファイルを開けません。'd3dx9.h':No such file or directory
+  select.cpp
+c:\users\student\desktop\hackathon_kuropi\プログラムファイル\2dhackathon000\main.h(8): fatal error C1083: include ファイルを開けません。'd3dx9.h':No such file or directory
+  score.cpp
+c:\users\student\desktop\hackathon_kuropi\プログラムファイル\2dhackathon000\main.h(8): fatal error C1083: include ファイルを開けません。'd3dx9.h':No such file or directory
+  result.cpp
+c:\users\student\desktop\hackathon_kuropi\プログラムファイル\2dhackathon000\main.h(8): fatal error C1083: include ファイルを開けません。'd3dx9.h':No such file or directory
+  ranking.cpp
+c:\users\student\desktop\hackathon_kuropi\プログラムファイル\2dhackathon000\main.h(8): fatal error C1083: include ファイルを開けません。'd3dx9.h':No such file or directory
+  pause.cpp
+c:\users\student\desktop\hackathon_kuropi\プログラムファイル\2dhackathon000\main.h(8): fatal error C1083: include ファイルを開けません。'd3dx9.h':No such file or directory
+  particle.cpp
+c:\users\student\desktop\hackathon_kuropi\プログラムファイル\2dhackathon000\main.h(8): fatal error C1083: include ファイルを開けません。'd3dx9.h':No such file or directory
+  main.cpp
+c:\users\student\desktop\hackathon_kuropi\プログラムファイル\2dhackathon000\main.h(8): fatal error C1083: include ファイルを開けません。'd3dx9.h':No such file or directory
+  input.cpp
+c:\users\student\desktop\hackathon_kuropi\プログラムファイル\2dhackathon000\main.h(8): fatal error C1083: include ファイルを開けません。'd3dx9.h':No such file or directory
+  game_logo.cpp
+c:\users\student\desktop\hackathon_kuropi\プログラムファイル\2dhackathon000\main.h(8): fatal error C1083: include ファイルを開けません。'd3dx9.h':No such file or directory
+  game.cpp
+c:\users\student\desktop\hackathon_kuropi\プログラムファイル\2dhackathon000\main.h(8): fatal error C1083: include ファイルを開けません。'd3dx9.h':No such file or directory
+  fade.cpp
+c:\users\student\desktop\hackathon_kuropi\プログラムファイル\2dhackathon000\main.h(8): fatal error C1083: include ファイルを開けません。'd3dx9.h':No such file or directory
+  item.cpp
+c:\users\student\desktop\hackathon_kuropi\プログラムファイル\2dhackathon000\main.h(8): fatal error C1083: include ファイルを開けません。'd3dx9.h':No such file or directory
+  Frame.cpp
+c:\users\student\desktop\hackathon_kuropi\プログラムファイル\2dhackathon000\main.h(8): fatal error C1083: include ファイルを開けません。'd3dx9.h':No such file or directory
+  bg.cpp
+c:\users\student\desktop\hackathon_kuropi\プログラムファイル\2dhackathon000\main.h(8): fatal error C1083: include ファイルを開けません。'd3dx9.h':No such file or directory
+  コードを生成中...
