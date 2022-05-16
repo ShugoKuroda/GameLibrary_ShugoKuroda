@@ -73,3 +73,27 @@
 要素こそ少ないですが、敵が毎回様々な挙動をするようにし、飽きずにプレイできる工夫をしました。
 
 ****************************************************************************************************************************************************
+
+Youtubeにも作品紹介動画や、まとめ動画などを限定公開しております。
+ぜひご覧ください。
+
+↓学内ゲーム大会まとめ↓
+https://youtu.be/QBbGBdZikRE
+
+↓【チーム作品】MemoryHit↓
+https://youtu.be/B4ZPFTrJBOA
+
+↓【チーム作品】FlyingPowerDisc3D↓
+https://youtu.be/ATIAhrv6VtI
+
+↓【個人作品】BattleWithAnarchy↓
+https://youtu.be/l1xwa3-ezJo
+
+↓【個人作品】HumanBox↓
+https://youtu.be/ZHeJ1fT0PHs
+
+↓【個人作品】SkyMachine↓
+https://youtu.be/boNcllUg0tw
+
+↓【Jobi看板コンテスト】クリスマスケーキ作ってみた↓
+https://youtu.be/X3KD1NxUIaE
