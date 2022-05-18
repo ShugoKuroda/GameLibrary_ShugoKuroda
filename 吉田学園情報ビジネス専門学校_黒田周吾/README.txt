@@ -95,5 +95,5 @@ https://youtu.be/ZHeJ1fT0PHs
 ↓【個人作品】SkyMachine↓
 https://youtu.be/boNcllUg0tw
 
-↓【Jobi看板コンテスト】クリスマスケーキ作ってみた↓
+↓【Jobi看板コンテスト応募作品】↓
 https://youtu.be/X3KD1NxUIaE
