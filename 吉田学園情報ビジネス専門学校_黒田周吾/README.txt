@@ -77,9 +77,6 @@
 Youtubeにも作品紹介動画や、まとめ動画などを限定公開しております。
 ぜひご覧ください。
 
-↓学内ゲーム大会まとめ↓
-https://youtu.be/QBbGBdZikRE
-
 ↓【チーム作品】MemoryHit↓
 https://youtu.be/B4ZPFTrJBOA
 
@@ -94,6 +91,9 @@ https://youtu.be/ZHeJ1fT0PHs
 
 ↓【個人作品】SkyMachine↓
 https://youtu.be/boNcllUg0tw
+
+↓学内ゲーム大会まとめ↓
+https://youtu.be/QBbGBdZikRE
 
 ↓【Jobi看板コンテスト応募作品】↓
 https://youtu.be/X3KD1NxUIaE
