@@ -79,6 +79,7 @@
     <LinkIncremental>true</LinkIncremental>
     <IncludePath>C:\Program Files %28x86%29\Microsoft DirectX SDK %28June 2010%29\Include;$(IncludePath)</IncludePath>
     <LibraryPath>C:\Program Files %28x86%29\Microsoft DirectX SDK %28June 2010%29\Lib\x64;$(LibraryPath)</LibraryPath>
+    <OutDir>.</OutDir>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
     <LinkIncremental>false</LinkIncremental>
@@ -157,36 +158,44 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="bg.cpp" />
-    <ClCompile Include="block.cpp" />
+    <ClCompile Include="effect.cpp" />
+    <ClCompile Include="Frame.cpp" />
+    <ClCompile Include="item.cpp" />
     <ClCompile Include="fade.cpp" />
-    <ClCompile Include="flag.cpp" />
     <ClCompile Include="game.cpp" />
-    <ClCompile Include="game_tutorial.cpp" />
+    <ClCompile Include="game_logo.cpp" />
     <ClCompile Include="input.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="particle.cpp" />
-    <ClCompile Include="player.cpp" />
+    <ClCompile Include="pause.cpp" />
+    <ClCompile Include="ranking.cpp" />
     <ClCompile Include="result.cpp" />
+    <ClCompile Include="score.cpp" />
+    <ClCompile Include="select.cpp" />
+    <ClCompile Include="shadow.cpp" />
     <ClCompile Include="sound.cpp" />
-    <ClCompile Include="switch.cpp" />
     <ClCompile Include="time.cpp" />
     <ClCompile Include="title.cpp" />
     <ClCompile Include="tutorial.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="bg.h" />
-    <ClInclude Include="block.h" />
+    <ClInclude Include="effect.h" />
+    <ClInclude Include="Frame.h" />
+    <ClInclude Include="item.h" />
     <ClInclude Include="fade.h" />
-    <ClInclude Include="flag.h" />
     <ClInclude Include="game.h" />
-    <ClInclude Include="game_tutorial.h" />
+    <ClInclude Include="game_logo.h" />
     <ClInclude Include="input.h" />
     <ClInclude Include="main.h" />
     <ClInclude Include="particle.h" />
-    <ClInclude Include="player.h" />
+    <ClInclude Include="pause.h" />
+    <ClInclude Include="ranking.h" />
     <ClInclude Include="result.h" />
+    <ClInclude Include="score.h" />
+    <ClInclude Include="select.h" />
+    <ClInclude Include="shadow.h" />
     <ClInclude Include="sound.h" />
-    <ClInclude Include="switch.h" />
     <ClInclude Include="time.h" />
     <ClInclude Include="title.h" />
     <ClInclude Include="tutorial.h" />
