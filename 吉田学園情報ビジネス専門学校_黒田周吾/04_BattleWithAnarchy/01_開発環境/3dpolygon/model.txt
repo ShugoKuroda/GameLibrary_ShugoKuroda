@@ -1,0 +1,146 @@
+//=============================================================================
+//
+//	モデルの設置処理 [SetModel.txt]
+//	Author : SHUGO KURODA
+//
+//=============================================================================
+
+//-----------------------------------------------------------------------------
+//Xファイルの読み込み
+//-----------------------------------------------------------------------------
+MODEL_FILENAME = data/MODEL/model/bill.x				# [0]廃墟ビル
+MODEL_FILENAME = data/MODEL/model/bill2.x				# [1]廃墟ビル２
+MODEL_FILENAME = data/MODEL/model/gareki.x				# [2]レンガガレキ
+MODEL_FILENAME = data/MODEL/model/gareki2.x				# [3]レンガガレキ(大)
+MODEL_FILENAME = data/MODEL/model/gareki3.x				# [4]レンガガレキ(灰色)
+MODEL_FILENAME = data/MODEL/model/hyosiki.x				# [5]標識
+MODEL_FILENAME = data/MODEL/model/pylon.x				# [6]パイロン
+MODEL_FILENAME = data/MODEL/model/dark.x				# [7]敵のリスポーン地点
+
+//-----------------------------------------------------------------------------
+//モデルの設置
+//-----------------------------------------------------------------------------
+#------------------
+# ビル
+#------------------
+MODELSET
+	TYPE = 0
+	POS = 300.0 0.0 570.0
+	ROT = 0.0 0.0 0.0
+END_MODELSET
+
+MODELSET
+	TYPE = 0
+	POS = -150.0 0.0 570.0
+	ROT = 0.0 0.0 0.0
+END_MODELSET
+
+MODELSET
+	TYPE = 0
+	POS = -1500.0 0.0 100.0
+	ROT = 0.0 1.57 0.0
+END_MODELSET
+
+MODELSET
+	TYPE = 0
+	POS = -1500.0 0.0 400.0
+	ROT = 0.0 1.57 0.0
+END_MODELSET
+
+MODELSET
+	TYPE = 1
+	POS = 500.0 0.0 -600.0
+	ROT = 0.0 0.0 0.0
+END_MODELSET
+
+#------------------
+# 瓦礫
+#------------------
+MODELSET
+	TYPE = 2
+	POS = 730.0 0.0 -170.0
+	ROT = 0.0 0.0 0.0
+END_MODELSET
+
+MODELSET
+	TYPE = 2
+	POS = 610.0 0.0 -470.0
+	ROT = 0.0 0.0 0.0
+END_MODELSET
+
+MODELSET
+	TYPE = 2
+	POS = 57.0 0.0 -860.0
+	ROT = 0.0 0.0 0.0
+END_MODELSET
+
+MODELSET
+	TYPE = 3
+	POS = 600.0 0.0 -600.0
+	ROT = 0.0 0.0 0.0
+END_MODELSET
+
+MODELSET
+	TYPE = 4
+	POS = -450.0 0.0 35.0
+	ROT = 0.0 0.0 0.0
+END_MODELSET
+
+MODELSET
+	TYPE = 4
+	POS = -20.0 0.0 340.0
+	ROT = 0.0 0.0 0.0
+END_MODELSET
+
+MODELSET
+	TYPE = 4
+	POS = -100.0 0.0 300.0
+	ROT = 0.0 0.0 0.0
+END_MODELSET
+
+MODELSET
+	TYPE = 3
+	POS = 0.0 0.0 -450.0
+	ROT = 0.0 0.0 0.0
+END_MODELSET
+
+#------------------
+# 標識
+#------------------
+MODELSET
+	TYPE = 5
+	POS = 550.0 0.0 310.0
+	ROT = 0.0 0.0 0.0
+END_MODELSET
+
+#------------------
+# パイロン
+#------------------
+MODELSET
+	TYPE = 6
+	POS = 50.0 0.0 510.0
+	ROT = 0.0 0.0 0.0
+END_MODELSET
+
+MODELSET
+	TYPE = 6
+	POS = 100.0 0.0 510.0
+	ROT = 0.0 0.0 0.0
+END_MODELSET
+
+MODELSET
+	TYPE = 6
+	POS = 530.0 0.0 330.0
+	ROT = 0.0 0.0 0.0
+END_MODELSET
+
+#------------------
+# パイロン
+#------------------
+MODELSET
+	TYPE = 7
+	POS = 0.0 0.0 0.0
+	ROT = 0.0 0.0 0.0
+END_MODELSET
+
+TEXT_END
