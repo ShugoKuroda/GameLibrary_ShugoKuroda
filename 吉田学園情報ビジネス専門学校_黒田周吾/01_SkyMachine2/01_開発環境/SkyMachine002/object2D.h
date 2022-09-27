@@ -18,6 +18,8 @@ class CObject2D : public CObject
 public:
 	// 頂点フォーマット
 	static const DWORD FVF_VERTEX_2D = (D3DFVF_XYZRHW | D3DFVF_DIFFUSE | D3DFVF_TEX1);
+	// 頂点の数
+	static const int MAX_VERTEX = 4;
 
 	// 頂点データ
 	struct VERTEX_2D
@@ -40,11 +42,16 @@ public:
 	void SetPosition(const D3DXVECTOR3& pos) { m_pos = pos; }
 	void SetSize(D3DXVECTOR2 size);
 	void SetRot(float fRot) { m_fRot = fRot; }
+	void SetMove(const D3DXVECTOR3& move){ m_move = move; }
 
 	void SetVertex();
 	void SetColor(D3DXCOLOR col);
 	void SetAnimation(int nAnimU, int nAnimV, int nPartU, int nPartV);
+	void SetAnimation(int nAnimU, int nAnimV, float fPartU, float fPartV);
 	void SetAnimBg(int nSpeed, int nPattern, bool bRightToLeft);
+	void SetAnimBgLeftUp(int nSpeed, int nPattern, bool bRightToLeft);
+
+	void SetTextureRange(int nRange, int nPattern);
 	// テクスチャの設定
 	void BindTexture(LPDIRECT3DTEXTURE9 Texture) { m_pTexture = Texture; }
 
@@ -79,7 +86,10 @@ private:	//メンバ変数
 	//アニメーションカウンター
 	int m_nCounterAnim;
 	//アニメーションパターン
-	int m_nPatternAnim; 
+	int m_nPatternAnim;
+
+	// 移動量(画面シェイク用)
+	D3DXVECTOR3 m_move;
 };
 
 #endif // _OBJECT_2D_

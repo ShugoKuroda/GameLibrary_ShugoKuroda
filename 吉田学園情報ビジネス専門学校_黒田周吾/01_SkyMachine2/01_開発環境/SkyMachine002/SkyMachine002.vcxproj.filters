@@ -31,9 +31,18 @@
     <ClCompile Include="enemy_boss.cpp" />
     <ClCompile Include="score.cpp" />
     <ClCompile Include="number.cpp" />
-    <ClCompile Include="fade_mode.cpp" />
-    <ClCompile Include="fade.cpp" />
     <ClCompile Include="effect.cpp" />
+    <ClCompile Include="pause.cpp" />
+    <ClCompile Include="fade_scene.cpp" />
+    <ClCompile Include="fade.cpp" />
+    <ClCompile Include="meshfield.cpp" />
+    <ClCompile Include="bg_move.cpp" />
+    <ClCompile Include="bullet_option.cpp" />
+    <ClCompile Include="item.cpp" />
+    <ClCompile Include="barrier.cpp" />
+    <ClCompile Include="gauge.cpp" />
+    <ClCompile Include="life.cpp" />
+    <ClCompile Include="continue.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="input.h" />
@@ -68,8 +77,17 @@
     <ClInclude Include="enemy_boss.h" />
     <ClInclude Include="score.h" />
     <ClInclude Include="number.h" />
-    <ClInclude Include="fade_mode.h" />
-    <ClInclude Include="fade.h" />
     <ClInclude Include="effect.h" />
+    <ClInclude Include="pause.h" />
+    <ClInclude Include="fade_scene.h" />
+    <ClInclude Include="fade.h" />
+    <ClInclude Include="meshfield.h" />
+    <ClInclude Include="bg_move.h" />
+    <ClInclude Include="bullet_option.h" />
+    <ClInclude Include="item.h" />
+    <ClInclude Include="barrier.h" />
+    <ClInclude Include="gauge.h" />
+    <ClInclude Include="life.h" />
+    <ClInclude Include="continue.h" />
   </ItemGroup>
 </Project>

@@ -21,6 +21,14 @@
 #include "spray.h"
 
 //-----------------------------------------------------------------------------------------------
+// マクロ定義
+//-----------------------------------------------------------------------------------------------
+#define BG_INTERVAL_IN_SEA		(2180)		// 海に入る演出の開始時間
+#define BG_INTERVAL_SEA_WEED	(2360)		// 海藻の描画開始時間
+#define BG_INTERVAL_BUBBLE		(2540)		// 水泡の描画開始時間
+#define BG_INTERVAL_OUT_SEA		(2720)		// 海に入る演出の終了時間
+
+//-----------------------------------------------------------------------------------------------
 // 静的メンバ変数
 //-----------------------------------------------------------------------------------------------
 // テクスチャのポインタ
@@ -32,13 +40,8 @@ CObject2D *CBg::m_apObject2D[BG_A_MAX] = {};
 //-----------------------------------------------------------------------------------------------
 CBg::CBg() :m_set(SET_NONE), m_nCntBgChange(0)
 {
-	for (int nCnt = 0; nCnt < BG_A_MAX; nCnt++)
-	{
-		m_apObject2D[nCnt] = nullptr;
-	}
-
 	//オブジェクトの種類設定
-	SetObjType(EObject::OBJ_BG);
+	SetObjType(EObject::OBJ_BG_MOVE);
 }
 
 //-----------------------------------------------------------------------------------------------
@@ -64,7 +67,7 @@ HRESULT CBg::Load()
 	D3DXCreateTextureFromFile(pDevice, "data/TEXTURE/bg000_04.png", &m_apTexture[BG_A_WAVE2]);		// 波2
 	D3DXCreateTextureFromFile(pDevice, "data/TEXTURE/bg000_05.png", &m_apTexture[BG_A_WAVE3]);		// 波3
 	D3DXCreateTextureFromFile(pDevice, "data/TEXTURE/bg000_06.png", &m_apTexture[BG_A_FLOOR]);		// 海中の床
-	D3DXCreateTextureFromFile(pDevice, "data/TEXTURE/bg000_11.png", &m_apTexture[BG_A_BOSS]);		// ボス戦の背景
+	D3DXCreateTextureFromFile(pDevice, "data/TEXTURE/bg000_11.jpg", &m_apTexture[BG_A_BOSS]);		// ボス戦の背景
 	D3DXCreateTextureFromFile(pDevice, "data/TEXTURE/bg000_07.png", &m_apTexture[BG_A_ROCK]);		// 岩
 	D3DXCreateTextureFromFile(pDevice, "data/TEXTURE/bg000_09.png", &m_apTexture[BG_A_SETWEED]);	// 海藻
 	D3DXCreateTextureFromFile(pDevice, "data/TEXTURE/bg000_10.png", &m_apTexture[BG_A_SETWEED2]);	// 海藻2
@@ -125,6 +128,8 @@ HRESULT CBg::Init()
 		for (int nCnt = 0; nCnt < BG_A_MAX; nCnt++)
 		{// 生成
 			m_apObject2D[nCnt] = new CObject2D;
+			//オブジェクトの種類設定
+			m_apObject2D[nCnt]->SetObjType(EObject::OBJ_BG);
 		}
 		
 		//波の背景のみ前で描画する
@@ -232,17 +237,7 @@ void CBg::Update()
 	//背景移動までのカウンターを加算
 	m_nCntBgChange++;
 
-#ifdef _DEBUG
-	// キーボード情報の取得
-	CInputKeyboard *pKeyboard = CManager::GetInputKeyboard();
-
-	if (pKeyboard->GetTrigger(CInputKeyboard::KEYINFO_1) == true)
-	{//1キーを押された
-		m_nCntBgChange = 2180;
-	}
-#endif // _DEBUG
-
-	if (m_nCntBgChange >= 2720)
+	if (m_nCntBgChange >= BG_INTERVAL_OUT_SEA)
 	{
 		//カウンターを止める
 		m_nCntBgChange = m_nCntBgChange;
@@ -256,7 +251,7 @@ void CBg::Update()
 		m_apObject2D[BG_A_SETWEED2]->SetAnimBg(1, 1000, true);
 	}
 	//一定時間経過で海に入る演出を開始する
-	else if (m_nCntBgChange >= 2180)
+	else if (m_nCntBgChange >= BG_INTERVAL_IN_SEA)
 	{
 		//背景位置の取得
 		D3DXVECTOR3 aPosBg[BG_A_MAX];
@@ -269,7 +264,7 @@ void CBg::Update()
 
 		float fMul = 1.5f;
 
-		if (m_nCntBgChange >= 2540)
+		if (m_nCntBgChange >= BG_INTERVAL_BUBBLE)
 		{
 			//泡エフェクトの生成を開始する
 			CGame::SetCreateBubble(true);
@@ -292,7 +287,7 @@ void CBg::Update()
 			//雲の生成を止める
 			CGame::SetCreateCloud(false);
 		}
-		else if (m_nCntBgChange >= 2360)
+		else if (m_nCntBgChange >= BG_INTERVAL_SEA_WEED)
 		{
 			fMul = 3.0f;
 

@@ -8,11 +8,18 @@
 #include "manager.h"
 #include "renderer.h"
 
+#include "object2D.h"
+#include "library.h"
+#include "meshfield.h"
+#include "game.h"
+
 //*****************************************************************************
 //	静的メンバ変数
 //*****************************************************************************
-CObject* CObject::m_apObject[CObject::MAX_OBJECT] = { nullptr };
+CObject* CObject::m_apObject[MAX_OBJECT] = { nullptr };
 int CObject::m_nNumAll = 0;
+int CObject::m_nShakeInterval = 0;
+bool CObject::m_bShake = false;
 
 //=============================================================================
 // デフォルトコンストラクタ
@@ -66,12 +73,48 @@ void CObject::ReleaseAll()
 //=============================================================================
 void CObject::UpdateAll()
 {
-	for (int nCntUpdate = 0; nCntUpdate < MAX_OBJECT; nCntUpdate++)
+	// ポーズ情報の取得
+	bool bPause = CManager::GetPause();
+
+	// ポーズ中でないなら
+	if (bPause == false)
 	{
-		if (m_apObject[nCntUpdate] != nullptr)
+		for (int nCntUpdate = 0; nCntUpdate < MAX_OBJECT; nCntUpdate++)
 		{
-			// ポリゴンの更新処理
-			m_apObject[nCntUpdate]->Update();
+			if (m_apObject[nCntUpdate] != nullptr)
+			{
+				// ポリゴンの更新処理
+				m_apObject[nCntUpdate]->Update();
+			}
+		}
+
+		// 画面シェイクフラグが立っているなら
+		if (m_bShake == true)
+		{//画面シェイクする
+			ShakeAll();
+		}
+	}
+	// ポーズ中なら
+	else if (bPause == true)
+	{
+		for (int nCntUpdate = 0; nCntUpdate < MAX_OBJECT; nCntUpdate++)
+		{
+			if (m_apObject[nCntUpdate] != nullptr)
+			{
+				//ポーズ画面のみ更新
+				if (m_apObject[nCntUpdate]->m_nType == OBJ_PAUSE || m_apObject[nCntUpdate]->m_nType == OBJ_PAUSE_MENU)
+				{
+					// 更新処理
+					m_apObject[nCntUpdate]->Update();
+				}
+				//ボスが倒されたらボスのみ更新
+				else if (CGame::GetDieBoss() == true && m_apObject[nCntUpdate]->m_nType == OBJ_ENEMYBOSS ||
+					CGame::GetDieBoss() == true && m_apObject[nCntUpdate]->m_nType == OBJ_FADE)
+				{
+					// 更新処理
+					m_apObject[nCntUpdate]->Update();
+				}
+			}
 		}
 	}
 }
@@ -139,7 +182,59 @@ void CObject::DrawAll()
 }
 
 //=============================================================================
-// コンストラクタ
+// オブジェクトを揺らす
+//=============================================================================
+void CObject::ShakeAll()
+{
+	if (m_nShakeInterval < 0)
+	{//シェイクを終える
+		m_bShake = false;
+		return;
+	}
+
+	// 突進する角度を決める
+	float fRot = LibrarySpace::GetRandFloat(3, 0, 100);
+
+	// シェイク(移動)量の設定
+	D3DXVECTOR3 move = D3DXVECTOR3(sinf(fRot) * m_nShakeInterval, cosf(fRot) * m_nShakeInterval, 0);
+
+	for (int nCntObject = 0; nCntObject < MAX_OBJECT; nCntObject++)
+	{
+		if (m_apObject[nCntObject] != nullptr)
+		{
+			if (m_apObject[nCntObject]->m_nType != OBJ_PLAYER &&
+				m_apObject[nCntObject]->m_nType != OBJ_BG_MOVE&&
+				m_apObject[nCntObject]->m_nType != OBJ_PAUSE)
+			{
+				//オブジェクトポインタを敵にキャスト
+				CObject2D *pObject2D = (CObject2D*)m_apObject[nCntObject];
+
+				// シェイク(移動)量の加算
+				pObject2D->SetMove(D3DXVECTOR3(sinf(fRot) * m_nShakeInterval,
+					cosf(fRot) * m_nShakeInterval, 0));
+			}
+		}
+	}
+
+	// ボス戦背景情報の取得
+	CMeshField* pMeshField= CGame::GetMeshField();
+
+	// シェイク(移動)量の加算
+	pMeshField->SetMove(D3DXVECTOR3(sinf(fRot) * m_nShakeInterval,
+		cosf(fRot) * m_nShakeInterval, 0));
+
+	// シェイクする秒数(振れ幅)を減らす
+	m_nShakeInterval--;
+}
+
+void CObject::SetShake(int nShakeNum)
+{
+	m_bShake = true;
+	m_nShakeInterval = nShakeNum;
+}
+
+//=============================================================================
+// 特定のオブジェクト破棄
 //=============================================================================
 void CObject::Release()
 {

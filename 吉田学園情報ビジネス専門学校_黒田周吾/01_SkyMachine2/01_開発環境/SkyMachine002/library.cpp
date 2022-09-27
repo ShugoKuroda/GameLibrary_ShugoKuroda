@@ -58,13 +58,13 @@ bool LibrarySpace::SteyInScreen2D(D3DXVECTOR3 *pPos, D3DXVECTOR2 size)
     }
 
     // 画面の上
-    if (pPos->y < size.y / 2)
-    {
+	if (pPos->y < 100.0f + size.y / 2)
+	{
 		// 押し出す
-        pPos->y = size.y / 2;
-        // 押し出しフラグをtrueに
-        bScreenIn = true;
-    }
+		pPos->y = 100.0f + size.y / 2;
+		// 押し出しフラグをtrueに
+		bScreenIn = true;
+	}
 
     // 画面の下
     if (pPos->y > SCREEN_HEIGHT - size.y / 2)
@@ -124,4 +124,49 @@ int LibrarySpace::GetRandNum(int nMax, int nMin)
 	int nRandNum = rand() % (nMax - nMin + 1) + nMin;
 
 	return nRandNum;
+}
+
+//-----------------------------------------------------------------------------------------------
+// 乱数(浮動小数)の取得
+//-----------------------------------------------------------------------------------------------
+float LibrarySpace::GetRandFloat(int nMax, int nMin, int nNumDiv)
+{
+	int nMaxNum = nMax * nNumDiv;
+	int nMinNum = nMin * nNumDiv;
+	
+	//最大値～最小値から乱数を取得
+	float fRandNum = (float)(rand() % (nMaxNum - nMinNum + 1) + nMinNum);
+	fRandNum = fRandNum / nNumDiv;
+
+	return fRandNum;
+}
+
+//-----------------------------------------------------------------------------------------------
+// サインの取得
+//-----------------------------------------------------------------------------------------------
+float LibrarySpace::GetSinVec(float fRot, float fNumMul)
+{
+	return sinf(D3DX_PI * fRot) * fNumMul;
+}
+
+//-----------------------------------------------------------------------------------------------
+// コサインの取得
+//-----------------------------------------------------------------------------------------------
+float LibrarySpace::GetCosVec(float fRot, float fNumMul)
+{
+	return cosf(D3DX_PI * fRot) * fNumMul;
+}
+
+//-----------------------------------------------------------------------------------------------
+// 座標間の距離計算
+//-----------------------------------------------------------------------------------------------
+float LibrarySpace::SphereRange(D3DXVECTOR3 posStart, D3DXVECTOR3 posEnd)
+{
+	//2つの座標差分を求める
+	D3DXVECTOR3 Length = posStart - posEnd;
+
+	//座標差分から距離を求める
+	float fLength = D3DXVec3Length(&Length);
+
+	return fLength;
 }

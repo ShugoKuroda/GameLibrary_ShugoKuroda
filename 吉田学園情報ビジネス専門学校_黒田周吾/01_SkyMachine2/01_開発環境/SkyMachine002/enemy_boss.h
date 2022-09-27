@@ -1,6 +1,6 @@
 //===================================================================
 //
-//	敵の処理[enemy.h]
+//	敵ボスの処理[enemy_boss.h]
 //	Author:SHUGO KURODA
 //
 //===================================================================
@@ -8,6 +8,11 @@
 #define _ENEMY_BOSS_H_
 
 #include "enemy.h"
+
+//*******************************************************************
+//	前方宣言
+//*******************************************************************
+class CPlayer;
 
 //*******************************************************************
 //	敵クラスの定義
@@ -44,7 +49,7 @@ public:
 		PATTERN_ENTRY = 0,	//登場
 		PATTERN_NORMAL,		//通常
 		PATTERN_RUSH,		//連続突進攻撃
-		PATTERN_CHARGE,		//チャージ弾攻撃
+		PATTERN_CREATE,		//雑魚敵の生成攻撃
 		PATTERN_BARRAGE,	//弾幕攻撃
 		PATTERN_DIE,		//死亡
 		PATTERN_MAX
@@ -61,14 +66,23 @@ public:
 	void Update() override;
 	void Draw() override;
 	bool Collision(D3DXVECTOR3 posStart) override;
-	void Damage(int nDamage) override;
+	void Damage(int nDamage, CPlayer* pPlayer) override;
 	void State() override;
 	void SetAnim() override;
+	bool Pattern(D3DXVECTOR3& pos, D3DXVECTOR2& size, D3DXVECTOR3& move);
+	void ChangeSize(D3DXVECTOR2 *pSize, const float& fSize);
+	void StateReset();
+
+	PATTERN GetPattern() { return m_pattern; }
 
 private:
+	D3DXVECTOR3 m_PosOld;	//前回の位置
 	PATTERN m_pattern;		//行動パターン
 	int m_nCounter;			//行動変化までのカウンター
 	int m_nCountOperation;	//突進前の予備動作の間隔
+	float m_fAttackRot;		//突進攻撃、弾発射の角度
+	bool m_bSizeChange;		//大きさの変更
+	int m_nCountObject;		//オブジェクトを生成した数
 };
 
 #endif	// _ENEMY_BOSS_H_

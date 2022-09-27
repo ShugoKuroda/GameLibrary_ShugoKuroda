@@ -7,6 +7,7 @@
 #include "manager.h"
 #include "renderer.h"
 #include "base.h"
+#include "fade.h"
 #include "sound.h"
 #include "load.h"
 
@@ -19,6 +20,8 @@
 #include "game.h"
 #include "result.h"
 
+#include "continue.h"
+
 #include <time.h>
 
 //*****************************************************************************
@@ -29,7 +32,11 @@ CRenderer *CManager::m_pRenderer = nullptr;
 CInputKeyboard *CManager::m_pInputKeyboard = nullptr;
 CInputJoypad *CManager::m_pInputJoypad = nullptr;
 CInputMouse *CManager::m_pInputMouse = nullptr;
-CSound *CManager::m_pSound = nullptr;					// サウンド情報のポインタ
+CSound *CManager::m_pSound = nullptr;	
+// フェードクラス
+CFade* CManager::m_pFade = nullptr;// サウンド情報のポインタ
+bool CManager::m_bPause = false;
+bool CManager::m_bEntry[CPlayer::PLAYER_MAX] = { false };
 
 CManager::MODE CManager::m_mode = MODE_TITLE;
 
@@ -87,13 +94,19 @@ HRESULT CManager::Init(HINSTANCE hInstance, HWND hWnd, bool bWindow)
 		m_pInputMouse->Init(hInstance, hWnd);
 	}
 
-	//// サウンドの初期化処理
-	//m_pSound = new CSound;
+	// サウンドの初期化処理
+	m_pSound = new CSound;
 
-	//if (m_pSound != nullptr)
-	//{
-	//	m_pSound->Init(hWnd);
-	//}
+	if (m_pSound != nullptr)
+	{
+		m_pSound->Init(hWnd);
+	}
+
+	// フェードの生成
+	if (m_pFade == nullptr)
+	{
+		m_pFade = CFade::Create(m_mode);
+	}
 
 	//敵配置情報のロード
 	LoadSpace::LoadEnemy(hWnd);
@@ -109,13 +122,13 @@ HRESULT CManager::Init(HINSTANCE hInstance, HWND hWnd, bool bWindow)
 //-----------------------------------------------------------------------------
 void CManager::Uninit()
 {
-	//// サウンドの終了処理
-	//if (m_pSound != nullptr)
-	//{
-	//	m_pSound->Uninit();
-	//	delete m_pSound;
-	//	m_pSound = nullptr;
-	//}
+	// サウンドの終了処理
+	if (m_pSound != nullptr)
+	{
+		m_pSound->Uninit();
+		delete m_pSound;
+		m_pSound = nullptr;
+	}
 
 	// レンダラの終了処理
 	if (m_pRenderer != nullptr)
@@ -123,6 +136,13 @@ void CManager::Uninit()
 		m_pRenderer->Uninit();
 		delete m_pRenderer;
 		m_pRenderer = nullptr;
+	}
+
+	// フェードの破棄
+	if (m_pFade != nullptr)
+	{
+		m_pFade->Uninit();
+		m_pFade = nullptr;
 	}
 
 	// オブジェクトの終了処理
@@ -184,16 +204,92 @@ void CManager::Update()
 		m_pInputMouse->Update();
 	}
 
-	// ベースの更新処理
-	if (m_pBase != nullptr)
+	// フェードの更新
+	if (m_pFade != nullptr)
 	{
-		m_pBase->Update();
+		m_pFade->Update();
+	}
+
+	//ポーズ中でないなら
+	if (m_bPause == false)
+	{
+		// ベースの更新処理
+		if (m_pBase != nullptr)
+		{
+			m_pBase->Update();
+		}
 	}
 
 	// レンダラの更新処理
 	if (m_pRenderer != nullptr)
 	{
 		m_pRenderer->Update();
+	}
+
+	// キーボード情報の取得
+	CInputKeyboard *pKeyboard = CManager::GetInputKeyboard();
+	// ジョイパッド情報の取得
+	CInputJoypad *pJoypad = CManager::GetInputJoypad();
+
+	// コンティニュー演出状態の取得
+	bool bContinue = CContinue::GetContinue();
+
+	// コンティニュー演出中ではないなら
+	if (bContinue == false)
+	{
+		for (int nCnt = CInputKeyboard::KEYINFO_OK; nCnt < CInputKeyboard::KEYINFO_MAX; nCnt++)
+		{
+			// キーボードのENTRY処理
+			if (pKeyboard->GetTrigger(nCnt) && m_bEntry[CPlayer::PLAYER_1] == false)
+			{
+				// ボタンを押したコントローラーをENTRY状態にする
+				SetEntry(CPlayer::PLAYER_1, true);
+				// エントリー音
+				CSound::Play(CSound::SOUND_LABEL_SE_MENU_IN);
+
+				break;
+			}
+		}
+
+		// プレイヤーのエントリー処理
+		for (int nCntController = 0; nCntController < CPlayer::PLAYER_MAX; nCntController++)
+		{
+			for (int nCnt = CInputJoypad::JOYKEY_UP; nCnt < CInputJoypad::JOYKEY_MAX; nCnt++)
+			{
+				if (pJoypad->GetTrigger((CInputJoypad::JOYKEY)nCnt, nCntController) && m_bEntry[nCntController] == false)
+				{
+					// ボタンを押したコントローラーをENTRY状態にする
+					SetEntry(nCntController, true);
+					// エントリー音
+					CSound::Play(CSound::SOUND_LABEL_SE_MENU_IN);
+					break;
+				}
+			}
+		}
+	}
+	// コンティニュー演出中なら
+	if (bContinue == true)
+	{
+		// キーボードのENTRY処理
+		if (pKeyboard->GetTrigger(CInputKeyboard::KEYINFO_OK) && m_bEntry[CPlayer::PLAYER_1] == false)
+		{
+			// ボタンを押したコントローラーをENTRY状態にする
+			SetEntry(CPlayer::PLAYER_1, true);
+			// エントリー音
+			CSound::Play(CSound::SOUND_LABEL_SE_MENU_IN);
+		}
+
+		// プレイヤーのエントリー処理
+		for (int nCntController = 0; nCntController < CPlayer::PLAYER_MAX; nCntController++)
+		{
+			if (pJoypad->GetTrigger(CInputJoypad::JOYKEY_START, nCntController) && m_bEntry[nCntController] == false)
+			{
+				// ボタンを押したコントローラーをENTRY状態にする
+				SetEntry(nCntController, true);
+				// エントリー音
+				CSound::Play(CSound::SOUND_LABEL_SE_MENU_IN);
+			}
+		}
 	}
 }
 
@@ -202,6 +298,12 @@ void CManager::Update()
 //-----------------------------------------------------------------------------
 void CManager::Draw()
 {
+	// フェードの更新
+	if (m_pFade != nullptr)
+	{
+		m_pFade->Draw();
+	}
+
 	// レンダラの描画処理
 	if (m_pRenderer != nullptr)
 	{
