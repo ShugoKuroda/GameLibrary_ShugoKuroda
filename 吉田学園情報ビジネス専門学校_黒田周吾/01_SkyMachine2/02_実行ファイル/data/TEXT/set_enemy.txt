@@ -933,7 +933,7 @@ END_ENEMYSET
 #--------------------
 BOSSSET
 	TYPE = 7
-	LIFE = 15
+	LIFE = 20
 	NUM = 15
 	INTERVAL = 10
 	MOVESET
