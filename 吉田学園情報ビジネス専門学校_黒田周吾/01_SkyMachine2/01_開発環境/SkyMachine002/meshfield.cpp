@@ -209,7 +209,11 @@ void CMeshField::Uninit()
 void CMeshField::Update()
 {
 	// 色変化
-	ChangeCol();
+	if (ChangeCol())
+	{// 破棄されたら終了
+		return;
+	}
+
 	// アニメーション
 	Animation();
 	// 頂点座標の更新
@@ -265,7 +269,7 @@ void CMeshField::Draw()
 //-----------------------------------------------------------------------------------------------
 // 色変化
 //-----------------------------------------------------------------------------------------------
-void CMeshField::ChangeCol()
+bool CMeshField::ChangeCol()
 {
 	// 色を赤と青のグラデーションにする
 	if (m_bCol == true)
@@ -299,7 +303,7 @@ void CMeshField::ChangeCol()
 		if (m_col.a <= 0.0f)
 		{// 終了
 			Uninit();
-			return;
+			return true;
 		}
 	}
 	// α値が1以下なら
@@ -307,6 +311,8 @@ void CMeshField::ChangeCol()
 	{// 不透明にする
 		m_col.a += 0.005f;
 	}
+
+	return false;
 }
 
 //-----------------------------------------------------------------------------------------------

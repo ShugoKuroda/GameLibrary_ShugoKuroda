@@ -159,7 +159,10 @@ void CLogo::Uninit()
 void CLogo::Update()
 {
 	// 終了処理の管理
-	UninitControl();
+	if (UninitControl())
+	{// 破棄したら終了
+		return;
+	}
 
 	// 挙動管理
 	SetMove();
@@ -179,7 +182,7 @@ void CLogo::Draw()
 //-----------------------------------------------------------------------------------------------
 // 終了処理の管理
 //-----------------------------------------------------------------------------------------------
-void CLogo::UninitControl()
+bool CLogo::UninitControl()
 {
 	// カウントを減らす
 	m_nCountUninit--;
@@ -198,8 +201,10 @@ void CLogo::UninitControl()
 
 		// 破棄
 		Uninit();
-		return;
+		return true;
 	}
+
+	return false;
 }
 
 //-----------------------------------------------------------------------------------------------

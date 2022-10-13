@@ -61,7 +61,7 @@ public:
 	void Draw() override;
 
 	// I—¹ˆ—‚ÌŠÇ—
-	void UninitControl();
+	bool UninitControl();
 	// ‹““®ŠÇ—
 	void SetMove();
 

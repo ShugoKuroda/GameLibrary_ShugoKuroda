@@ -37,7 +37,7 @@ public:
 	void Draw() override;
 
 	// 色変化
-	void ChangeCol();
+	bool ChangeCol();
 	// アニメーション
 	void Animation();
 	// 頂点座標の更新
